@@ -1,0 +1,27 @@
+{
+  "name": "PreviewBatch",
+  "plural": "PreviewBatches",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "batchId": {
+      "type": "string",
+      "required": true
+    },
+    "message": {
+      "type": "object",
+      "required": true
+    },
+    "tasks": {
+      "type": "object",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": []
+}

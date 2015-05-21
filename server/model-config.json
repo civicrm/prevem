@@ -25,5 +25,9 @@
   "Role": {
     "dataSource": "db",
     "public": false
+  },
+  "PreviewBatch": {
+    "dataSource": "db",
+    "public": true
   }
 }
