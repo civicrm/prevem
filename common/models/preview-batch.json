@@ -2,12 +2,17 @@
   "name": "PreviewBatch",
   "plural": "PreviewBatches",
   "base": "PersistedModel",
-  "idInjection": true,
+  "idInjection": false,
   "options": {
     "validateUpsert": true
   },
   "properties": {
     "batchId": {
+      "type": "string",
+      "id": true,
+      "generated": false
+    },
+    "consumerId": {
       "type": "string",
       "required": true
     },
@@ -15,9 +20,15 @@
       "type": "object",
       "required": true
     },
-    "tasks": {
-      "type": "object",
+    "renderers": {
+      "type": "array",
       "required": true
+    },
+    "startTime": {
+      "type": "date"
+    },
+    "endTime": {
+      "type": "date"
     }
   },
   "validations": [],
