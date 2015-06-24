@@ -1,0 +1,43 @@
+{
+  "name": "PreviewTask",
+  "plural": "PreviewTasks",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "consumerId": {
+      "type": "string",
+      "required": true
+    },
+    "batchId": {
+      "type": "string",
+      "required": true
+    },
+    "renderer": {
+      "type": "string",
+      "required": true
+    },
+    "message": {
+      "type": "object",
+      "required": true
+    },
+    "result": {
+      "type": "object"
+    },
+    "startTime": {
+      "type": "date"
+    },
+    "endTime": {
+      "type": "date"
+    },
+    "expireTime": {
+      "type": "date"
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": []
+}

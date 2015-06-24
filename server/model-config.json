@@ -29,5 +29,9 @@
   "PreviewBatch": {
     "dataSource": "db",
     "public": true
+  },
+  "PreviewTask": {
+    "dataSource": "db",
+    "public": true
   }
 }
