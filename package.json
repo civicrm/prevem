@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "server/server.js",
   "scripts": {
-    "pretest": "jshint ."
+    "pretest": "jshint common/ client/ server/",
+    "test": "./node_modules/mocha/bin/mocha -w --timeout 5000 test/*.js"
   },
   "dependencies": {
     "compression": "^1.0.3",
