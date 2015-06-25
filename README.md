@@ -114,10 +114,10 @@ Accept: application/json
 }
 ```
 
-The request will ordinarily return an empty object. However, if there is
-a pending task, it will reserve and return that task.
+The request will ordinarily return an empty object. However, if there are
+any pending tasks, it will reserve and return the next available task.
 
-After working on the task, the renderer should submit resulting
+After working on the task, the renderer should submit the resulting
 screenshot:
 
 ```
