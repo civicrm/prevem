@@ -43,6 +43,11 @@ the test suite.
 If you encounter a hard-crash during development, you may need to
 manually restart `gulp develop`.
 
+# Data Model
+
+The model is defined in JSON files under [common/models](common/models).
+To create additional models, see "Create Models" in [LoopBack: Getting Started](http://loopback.io/getting-started/).
+
 # API Examples
 
 The following sections discuss a bit about how other agents are
