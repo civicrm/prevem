@@ -23,8 +23,14 @@
     "renderers": {
       "type": "array",
       "required": true
+    },/*
+    "startTime": {
+      "type": "date"
+    },
+    "endTime": {
+      "type": "date"
     }
-  },
+  },*/
   "validations": [],
   "relations": {},
   "acls": [],
