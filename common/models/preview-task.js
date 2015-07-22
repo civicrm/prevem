@@ -32,7 +32,7 @@ module.exports = function(PreviewTask) {
     'claim', 
     {
        accepts: {arg: 'renderer', type: 'string'},
-       returns: {arg: 'Preview Task', type: 'object'},
+       returns: {arg: 'newTask', type: 'object'},
        http: {path: '/claim', verb: 'get'}
      }
 );
