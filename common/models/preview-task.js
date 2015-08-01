@@ -1,32 +1,33 @@
 module.exports = function(PreviewTask) {
-    PreviewTask.claim = function(renderer, cb, next) {
-    PreviewTask.findOne({where: {renderer: renderer,
-                                or: [
-                                  {expireTime: null},
-                                  {expireTime: {lte: Date.now()/1000}}]
-                                }
-
-                        },
-     function (err, model) {
-        if (err) {
-          console.error(err);
-        }
-        else {
+    PreviewTask.claim = function(renderer, cb) {
+    PreviewTask.find({where: {renderer: renderer}}, function (err, models) {
+      if (err) {
+        console.log(err);
+      }
+      else {
+        models.forEach(function (model){
           if (model != null) {
+            var task = model.toJSON();
+            if ((task.expireTime == null || task.expireTime <= new Date().getTime()/1000) && task.result == null) {
               var Task_TTL= 5*60;    //expiration time in seconds
               // seconds since midnight, 1 Jan 1970
               model.updateAttribute('startTime', new Date().getTime()/1000);
               // task expires after the specified TTL
               model.updateAttribute('expireTime',new Date().getTime()/1000 + Task_TTL);
+              cb(err, model);
+            }
+            else {
+              console.log (new Error('No Tasks Pending'));
+              cb(err, null)
+            }
           }
           else {
             console.log (new Error('No tasks pending'));
           }
-        }
-        cb(err, model);
+        });
+      }
    });
 };
-
 
       PreviewTask.remoteMethod(
     'claim', 
