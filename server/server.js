@@ -20,3 +20,5 @@ boot(app, __dirname, function(err) {
   if (require.main === module)
     app.start();
 });
+// app.use(loopback.bodyParser.json({limit: '50mb'}));
+// app.use(loopback.bodyParser.urlencoded({limit: '50mb', extended: true}));

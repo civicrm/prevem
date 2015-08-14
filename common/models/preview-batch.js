@@ -43,6 +43,14 @@ module.exports = function(PreviewBatch) {
     }
   });
 
+  PreviewBatch.observe('before delete', function deleteChildTasks(ctx, cb) {
+    //console.log(ctx.Model.instance);
+    var PreviewTask = loopback.findModel('PreviewTask');
+    PreviewTask.deleteAll({batchId : ctx.where.batchId}, function(err) {
+      cb (err);
+    });
+  });
+
   PreviewBatch.status =function(batchId, cb) {
     var PreviewTask = loopback.findModel('PreviewTask');
     PreviewTask.find({where: {batchId: batchId}}, function (err, models) {
@@ -57,12 +65,12 @@ module.exports = function(PreviewBatch) {
           var task = model.toJSON();
           counter = counter + 1;
           if (task.startTime == null) {
-            response[task.renderer] = '0';
+            response[task.renderer] = 0;
             //console.log(task.renderer + ' awaiting renderer.');
           }
           else {
             if (task.result == null) {
-              response[task.renderer] = '1';
+              response[task.renderer] = 2;
               //console.log(task.renderer + ' is being processed.');
             }
             else {
