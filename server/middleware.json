@@ -13,16 +13,11 @@
       }
     }
   },
-  "session": {
-  },
-  "auth": {
-  },
-  "parse": {
-  },
-  "routes": {
-  },
-  "files": {
-  },
+  "session": {},
+  "auth": {},
+  "parse": {},
+  "routes": {},
+  "files": {},
   "final": {
     "loopback#urlNotFound": {}
   },
