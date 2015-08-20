@@ -23,12 +23,11 @@ module.exports = function(PreviewTask) {
    });
 };
 
-      PreviewTask.remoteMethod(
-    'claim', 
-    {
-       accepts: {arg: 'renderer', type: 'string'},
-       returns: {arg: 'newTask', type: 'object'},
-       http: {path: '/claim', verb: 'get'}
-     }
-);
+PreviewTask.remoteMethod(
+  'claim', 
+  {
+     accepts: {arg: 'renderer', type: 'string'},
+     returns: {arg: 'newTask', type: 'object'},
+     http: {path: '/claim', verb: 'get'}
+   });
 };

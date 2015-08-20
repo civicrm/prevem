@@ -1,5 +1,12 @@
 var loopback = require('loopback');
 var fs = require ('fs');
+var pathToimageDirectory = 'images/'
+
+var config = fs.readFileSync('server/config.json');
+
+var configJSON = JSON.parse(config);
+
+var prevemURL = 'http://'+configJSON.host+':'+configJSON.port
 
 module.exports = function(PreviewBatch) {
 
@@ -75,10 +82,21 @@ module.exports = function(PreviewBatch) {
             }
             else {
               NumberOfTasksCompleted = NumberOfTasksCompleted + 1;
-              var imageURL = '/var/www/html/images/'+ task.batchId + task.renderer + '.png'
-              base64_decode(task.result, imageURL);
-              response[task.renderer] = 'http://localhost/images/' + task.batchId + task.renderer + '.png';
-              //console.log(task.renderer + ' is ready.');
+              if (task.result == 'Connection') {
+                response[task.renderer] = 3;
+              }
+              else if (task.result == 'Element') {
+                response[task.renderer] = 4;
+              }
+              else if (task.result == 'Unknown') {
+                response[task.renderer] = 5;
+              }
+              else {
+                var imageURL = pathToimageDirectory + task.batchId + task.renderer + '.png'
+                base64_decode(task.result, imageURL);
+                response[task.renderer] = prevemURL + '/' + task.batchId + task.renderer + '.png';
+                //console.log(task.renderer + ' is ready.');
+              }
             }
           }
         });
