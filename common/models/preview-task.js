@@ -1,3 +1,4 @@
+/* jshint maxlen:180 */
 module.exports = function(PreviewTask) {
     PreviewTask.claim = function(renderer, cb) {
     var time = new Date().getTime()/1000;
@@ -6,17 +7,17 @@ module.exports = function(PreviewTask) {
         console.log(err);
       }
       else {
-        if (model == undefined) {
+        if (model === undefined) {
           console.log('No tasks pending');
           cb (err, null);
         }
         else {
           var task = model.toJSON();
-          var Task_TTL= 5*60;    //expiration time in seconds
+          var TaskTTL= 5*60;    //expiration time in seconds
           // seconds since midnight, 1 Jan 1970
           model.updateAttribute('startTime', new Date().getTime()/1000);
           // task expires after the specified TTL
-          model.updateAttribute('expireTime',new Date().getTime()/1000 + Task_TTL);
+          model.updateAttribute('expireTime',new Date().getTime()/1000 + TaskTTL);
           cb(err, model);
         }
       }

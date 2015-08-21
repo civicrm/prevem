@@ -1,12 +1,13 @@
+/* jshint maxlen:130 */
 var loopback = require('loopback');
 var fs = require ('fs');
-var pathToimageDirectory = 'images/'
+var pathToimageDirectory = 'images/';
 
 var config = fs.readFileSync('server/config.json');
 
 var configJSON = JSON.parse(config);
 
-var prevemURL = 'http://'+configJSON.host+':'+configJSON.port
+var prevemURL = 'http://'+configJSON.host+':'+configJSON.port;
 
 module.exports = function(PreviewBatch) {
 
@@ -59,41 +60,41 @@ module.exports = function(PreviewBatch) {
   });
 
   PreviewBatch.status =function(batchId, cb) {
+    var response = {};
+    var counter = 0;
+    var NumberOfTasksCompleted = 0;
     var PreviewTask = loopback.findModel('PreviewTask');
     PreviewTask.find({where: {batchId: batchId}}, function (err, models) {
       if (err) {
         console.log('Failed to check status');
       }
       else {
-        var response = {};
-        var counter = 0;
-        var NumberOfTasksCompleted = 0;
         models.forEach(function (model){
           var task = model.toJSON();
           counter = counter + 1;
           if (task.startTime == null) {
-            response[task.renderer] = 0;
+            response[task.renderer] = 'Unattended';
             //console.log(task.renderer + ' awaiting renderer.');
           }
           else {
             if (task.result == null) {
-              response[task.renderer] = 2;
+              response[task.renderer] = 'Processing';
               //console.log(task.renderer + ' is being processed.');
             }
             else {
               NumberOfTasksCompleted = NumberOfTasksCompleted + 1;
-              if (task.result == 'Connection') {
-                response[task.renderer] = 3;
+              if (task.result === 'Connection') {
+                response[task.renderer] = 'Connection Refused';
               }
-              else if (task.result == 'Element') {
-                response[task.renderer] = 4;
+              else if (task.result === 'Element') {
+                response[task.renderer] = 'Element Not Found';
               }
-              else if (task.result == 'Unknown') {
-                response[task.renderer] = 5;
+              else if (task.result === 'Unknown') {
+                response[task.renderer] = 'Unknown Error';
               }
               else {
-                var imageURL = pathToimageDirectory + task.batchId + task.renderer + '.png'
-                base64_decode(task.result, imageURL);
+                var imageURL = pathToimageDirectory + task.batchId + task.renderer + '.png';
+                base64Decode(task.result, imageURL);
                 response[task.renderer] = prevemURL + '/' + task.batchId + task.renderer + '.png';
                 //console.log(task.renderer + ' is ready.');
               }
@@ -101,7 +102,7 @@ module.exports = function(PreviewBatch) {
           }
         });
       }
-      if (NumberOfTasksCompleted == counter) {
+      if (NumberOfTasksCompleted === counter) {
         response['finished'] = 1;
       }
       else {
@@ -111,8 +112,8 @@ module.exports = function(PreviewBatch) {
     });
 
     // function to create file from base64 encoded string
-    function base64_decode(base64str, file) {
-      // create buffer object from base64 encoded string, it is important to tell the constructor that the string is base64 encoded
+    function base64Decode(base64str, file) {
+      // create buffer object from base64 encoded string
       var bitmap = new Buffer(base64str, 'base64');
       // write buffer to file
       fs.writeFileSync(file, bitmap);
