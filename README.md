@@ -13,80 +13,80 @@ which may be used for two types of agents:
 
 1. Setup Preview Manager
 
-The Preview Manager is based on Loopback which is an open-source Node.js framework for creating end-to-end REST APIs. To set up Preview Manager on your machine, follow the following steps.
-
-```
-$ git clone https://github.com/civicrm/prevem
-...
-$ cd prevem
-$ npm install
-...
-$ node .
-Browse your REST API at http://0.0.0.0:3000/explorer
-Web server listening at: http://0.0.0.0:3000/
-```
+  The Preview Manager is based on Loopback which is an open-source Node.js framework for creating end-to-end REST APIs. To set up Preview Manager on your machine, follow the following steps.
+  
+  ```
+  $ git clone https://github.com/civicrm/prevem
+  ...
+  $ cd prevem
+  $ npm install
+  ...
+  $ node .
+  Browse your REST API at http://0.0.0.0:3000/explorer
+  Web server listening at: http://0.0.0.0:3000/
+  ```
 
 2. Setup Webmail Renderer
 
-Webmail renderer is a Node.js based code which polls the Preview Manager periodically to claim a pending preview task of it's type, prepare a screenshot for that task and POST it back to the preview manager. Currently, there are two renderers, one for Gmail and YahooMail each. The renderer depends on the selenium standalone server for browser automation. So you need to install the selenium standalone server on your machine as well.
-The file package.json also contains the [Webmail Renderer](www.github.com/utkarshsharma/webmail-renderer.git) package which gets installed when you do npm install.
-
-```
-$ cd node_modules/webmail-renderer
-## If you don't already have Selenium Standalone Server installed on your machine, run the following 2 commands.
-## You can skip them otherwise.
-$ npm install selenium-standalone@latest -g
-$ selenium-standalone install
-
-## Create a config file
-$ cp config.json.template config.json
-$ vi config.json   (<== Put in gmail and yahoo credentials==>)
-## The sender credentials should be of a gmail account with reduced security, i.e., "Allow Less Secure Apps" should be ON.
-## You don't need to change the prevemURL and prevemCredentials fields.
-## These entries match the default Prevem URL and the credentials that the renderers use to login to the Prevem.
-
-## Run the renderers
-$ nodejs gmail.js
-$ nodejs yahoo.js ##In a new Terminal tab
-##These nodejs scripts will keep running in the background and render any tasks pitched up to them.
-```
+  Webmail renderer is a Node.js based code which polls the Preview Manager periodically to claim a pending preview task of it's type, prepare a screenshot for that task and POST it back to the preview manager. Currently, there are two renderers, one for Gmail and YahooMail each. The renderer depends on the selenium standalone server for browser automation. So you need to install the selenium standalone server on your machine as well.
+  The file package.json also contains the [Webmail Renderer](www.github.com/utkarshsharma/webmail-renderer.git) package which gets installed when you do npm install.
+  
+  ```
+  $ cd node_modules/webmail-renderer
+  ## If you don't already have Selenium Standalone Server installed on your machine, run the following 2 commands.
+  ## You can skip them otherwise.
+  $ npm install selenium-standalone@latest -g
+  $ selenium-standalone install
+  
+  ## Create a config file
+  $ cp config.json.template config.json
+  $ vi config.json   (<== Put in gmail and yahoo credentials==>)
+  ## The sender credentials should be of a gmail account with reduced security, i.e., "Allow Less Secure Apps" should be ON.
+  ## You don't need to change the prevemURL and prevemCredentials fields.
+  ## These entries match the default Prevem URL and the credentials that the renderers use to login to the Prevem.
+  
+  ## Run the renderers
+  $ nodejs gmail.js
+  $ nodejs yahoo.js ##In a new Terminal tab
+  ##These nodejs scripts will keep running in the background and render any tasks pitched up to them.
+  ```
 
 3. Setup CiviCRM
 
-Pull [this](https://github.com/utkarshsharma/civicrm-core) branch of civicrm-core to your machine.
-Now in your CiviCRM, on the Navigation Bar, click Administer>CiviMail>CiviMail Component Settings.
-Set your Prevem URL from there.
-You can also use your CLI to configure the prevemURL.
-
-```
-$ drush cvapi setting.create prevem_url="http://consumerId:consumerPass@localhost:3000"
-```
-
-The prevemURL is to be written in the said format. Here's what those terms in it's definition mean.
-
-`consumerId`
-Your consumer ID on the Prevem. Every preview batch you request would be carrying this Id to distinguish your preview batches from the others. This will also be used to login to the Prevem.
-
-`consumerPass`
-Your secret password which will be used to login to the Prevem.
-
-`localhost:3000`
-Change this if you are hosting your Prevem somewhere other than localhost:3000
+  Pull [this](https://github.com/utkarshsharma/civicrm-core) branch of civicrm-core to your machine.
+  Now in your CiviCRM, on the Navigation Bar, click Administer>CiviMail>CiviMail Component Settings.
+  Set your Prevem URL from there.
+  You can also use your CLI to configure the prevemURL.
+  
+  ```
+  $ drush cvapi setting.create prevem_url="http://consumerId:consumerPass@localhost:3000"
+  ```
+  
+  The prevemURL is to be written in the said format. Here's what those terms in it's definition mean.
+  
+  `consumerId`
+  Your consumer ID on the Prevem. Every preview batch you request would be carrying this Id to distinguish your preview batches from the others. This will also be used to login to the Prevem.
+  
+  `consumerPass`
+  Your secret password which will be used to login to the Prevem.
+  
+  `localhost:3000`
+  Change this if you are hosting your Prevem somewhere other than localhost:3000
 
 4. Create a user on the Prevem
 
-Start your prevem, by doing `node .` as given in section 1 of the setup.
-Go to `prevem_url`/explorer/#!/Users/create (e.g. http://0.0.0.0:3000/explorer/#!/Users/create). You'll find your REST APIs there. In POST Users/ section, inside the data input box enter your details in the following format and then click on the `Try it Out` box.
-
-```
-{
-  "email":"consumerId@foo.com",
-  "password":"consumerPass"
-}
-```
-
-That completes your setup. You are now ready to use your Email Preview Cluster Service.
-You can simply go to your CiviCRM mailing page and request previews.
+  Start your prevem, by doing `node .` as given in section 1 of the setup.
+  Go to `prevem_url`/explorer/#!/Users/create (e.g. http://0.0.0.0:3000/explorer/#!/Users/create). You'll find your REST APIs there. In POST Users/ section, inside the data input box enter your details in the following format and then click on the `Try it Out` box.
+  
+  ```
+  {
+    "email":"consumerId@foo.com",
+    "password":"consumerPass"
+  }
+  ```
+  
+  That completes your setup. You are now ready to use your Email Preview Cluster Service.
+  You can simply go to your CiviCRM mailing page and request previews.
 
 <!-- # Preview Manager Configuration
 
