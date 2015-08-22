@@ -1,7 +1,7 @@
 # Prevem: Open source preview manager for emails
 
 Prevem is a batch manager for email previews. It provides a RESTful CRUD API
-which may be used for two types of agents:
+which works with two agents:
 
  * *Composer* - The mail user-agent (MUA) in which a user prepares a mailing.
    Generally, the Composer submits a `PreviewBatch` and polls to track its progress.
@@ -9,17 +9,15 @@ which may be used for two types of agents:
    appear when read in different MUAs. Generally, a Renderer polls for a pending
    `PreviewTask` record, prepares a screenshot, and then marks it as completed.
 
-The Prevem, the Composer and the Renderer have been/are being developed as a part of a project called Email Preview Cluster which is meant to help users (of CiviCRM) to generate previews (screenshots) of their emails to see what they'll look like to receivers on various email clients.
+All three components (prevem, the composer, and the renderer) have been/are being developed as a part of a project called Email Preview Cluster which is meant to help users (of CiviCRM) to generate previews (screenshots) of their emails to see what they'll look like to receivers on various email clients.
 
-# Setup
+# Getting Started
 
-In order to be able to use the Email Preview Cluster Service on your copy of CiviCRM, you need to follow the following guide to set it up.
+### 1. Setup the Preview Manager (prevem)
 
-1. Setup Preview Manager
+  The *preview manager* (`prevem`) is based on [Loopback](http://loopback.io/), an open-source framework for creating RESTful APIs in NodeJS. It stores the list of pending jobs as well as the resulting image files. To set up `prevem` on your machine, follow these steps:
 
-  The Preview Manager is based on Loopback which is an open-source Node.js framework for creating end-to-end REST APIs. To set up Preview Manager on your machine, follow the following steps.
-  
-  ```
+  ```bash
   $ git clone https://github.com/civicrm/prevem
   ...
   $ cd prevem
@@ -30,12 +28,13 @@ In order to be able to use the Email Preview Cluster Service on your copy of Civ
   Web server listening at: http://0.0.0.0:3000/
   ```
 
-2. Setup Webmail Renderer
+### 2. Setup the Webmail Renderer
 
-  Webmail renderer is a Node.js based code which polls the Preview Manager periodically to claim a pending preview task of it's type, prepare a screenshot for that task and POST it back to the preview manager. Currently, there are two renderers, one for Gmail and YahooMail each. The renderer depends on the selenium standalone server for browser automation. So you need to install the selenium standalone server on your machine as well.
-  The file package.json also contains the [Webmail Renderer](www.github.com/utkarshsharma/webmail-renderer.git) package which gets installed when you do npm install.
+  The [Webmail Renderer](www.github.com/utkarshsharma/webmail-renderer.git) is a Node.js application which periodically polls `prevem` to claim a pending preview task, prepare a screenshot, and upload the final image. Currently, there are two webmail renderers (Gmail and YahooMail). The renderer depends on [Selenium Server](http://www.seleniumhq.org/) for browser automation.
+
+  The webmail-renderer is automatically downloaded by `npm install`, but you must configure and start it:
   
-  ```
+  ```bash
   $ cd node_modules/webmail-renderer
   ## If you don't already have Selenium Standalone Server installed on your machine, run the following 2 commands.
   ## You can skip them otherwise.
@@ -55,14 +54,14 @@ In order to be able to use the Email Preview Cluster Service on your copy of Civ
   ##These nodejs scripts will keep running in the background and render any tasks pitched up to them.
   ```
 
-3. Setup CiviCRM
+### 3. Setup CiviCRM
 
-  Pull [this](https://github.com/utkarshsharma/civicrm-core) branch of civicrm-core to your machine.
-  Now in your CiviCRM, on the Navigation Bar, click Administer>CiviMail>CiviMail Component Settings.
-  Set your Prevem URL from there.
-  You can also use your CLI to configure the prevemURL.
+  * Pull [this](https://github.com/utkarshsharma/civicrm-core) branch of civicrm-core to your machine.
+  * Now in your CiviCRM, navigate to `Administer > CiviMail > CiviMail Component Settings`.
+  * Set your `Prevem URL` from there.
+  * Alternatively, you can use the CLI to configure the `prevem_url`:
   
-  ```
+  ```bash
   $ drush cvapi setting.create prevem_url="http://consumerId:consumerPass@localhost:3000"
   ```
   
@@ -77,7 +76,7 @@ In order to be able to use the Email Preview Cluster Service on your copy of Civ
   `localhost:3000`
   Change this if you are hosting your Prevem somewhere other than localhost:3000
 
-4. Create a user on the Prevem
+### 4. Create a prevem user account
 
   Start your prevem, by doing `node .` as given in section 1 of the setup.
   Go to `prevem_url`/explorer/#!/Users/create (e.g. http://0.0.0.0:3000/explorer/#!/Users/create). You'll find your REST APIs there. In POST Users/ section, inside the data input box enter your details in the following format and then click on the `Try it Out` box.
