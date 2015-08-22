@@ -30,7 +30,7 @@ All three components (prevem, the composer, and the renderer) have been/are bein
 
 ### 2. Setup the Webmail Renderer
 
-  The [Webmail Renderer](www.github.com/utkarshsharma/webmail-renderer.git) is a Node.js application which periodically polls `prevem` to claim a pending preview task, prepare a screenshot, and upload the final image. Currently, there are two webmail renderers (Gmail and YahooMail). The renderer depends on [Selenium Server](http://www.seleniumhq.org/) for browser automation.
+  The [Webmail Renderer](https://github.com/utkarshsharma/webmail-renderer) is a Node.js application which periodically polls `prevem` to claim a pending preview task, prepare a screenshot, and upload the final image. Currently, there are two webmail renderers (Gmail and YahooMail). The renderer depends on [Selenium Server](http://www.seleniumhq.org/) for browser automation.
 
   The webmail-renderer is automatically downloaded by `npm install`, but you must configure and start it:
   
