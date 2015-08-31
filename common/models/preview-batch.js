@@ -1,13 +1,13 @@
 /* jshint maxlen:130 */
 var loopback = require('loopback');
-var fs = require ('fs');
+var fs = require('fs');
 var pathToimageDirectory = 'images/';
 
 var config = fs.readFileSync('server/config.json');
 
 var configJSON = JSON.parse(config);
 
-var prevemURL = 'http://'+configJSON.host+':'+configJSON.port;
+var prevemURL = 'http://' + configJSON.host + ':' + configJSON.port;
 
 module.exports = function(PreviewBatch) {
 
@@ -54,22 +54,22 @@ module.exports = function(PreviewBatch) {
   PreviewBatch.observe('before delete', function deleteChildTasks(ctx, cb) {
     //console.log(ctx.Model.instance);
     var PreviewTask = loopback.findModel('PreviewTask');
-    PreviewTask.deleteAll({batchId : ctx.where.batchId}, function(err) {
-      cb (err);
+    PreviewTask.deleteAll({batchId: ctx.where.batchId}, function(err) {
+      cb(err);
     });
   });
 
-  PreviewBatch.status =function(batchId, cb) {
+  PreviewBatch.status = function(batchId, cb) {
     var response = {};
     var counter = 0;
     var NumberOfTasksCompleted = 0;
     var PreviewTask = loopback.findModel('PreviewTask');
-    PreviewTask.find({where: {batchId: batchId}}, function (err, models) {
+    PreviewTask.find({where: {batchId: batchId}}, function(err, models) {
       if (err) {
         console.log('Failed to check status');
       }
       else {
-        models.forEach(function (model){
+        models.forEach(function(model) {
           var task = model.toJSON();
           counter = counter + 1;
           if (task.startTime == null) {
@@ -121,12 +121,9 @@ module.exports = function(PreviewBatch) {
 
   };
 
-  PreviewBatch.remoteMethod(
-    'status', 
-    {
-       accepts: {arg:'batchId', type: 'string'},
-       returns: {arg: 'response', type: 'object'},
-       http: {path: '/status', verb: 'get', res: 'response', target: 'status'}
-     }
-);
+  PreviewBatch.remoteMethod('status', {
+    accepts: {arg: 'batchId', type: 'string'},
+    returns: {arg: 'response', type: 'object'},
+    http: {path: '/status', verb: 'get', res: 'response', target: 'status'}
+  });
 };
